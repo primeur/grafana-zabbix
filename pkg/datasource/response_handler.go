@@ -100,6 +100,10 @@ func seriesToDataFrame(series *timeseries.TimeSeriesData, valuemaps []zabbix.Val
 		valueField.Labels["host"] = item.Hosts[0].Name
 	}
 
+	for _, tag := range item.Tags {
+		scopedVars["__zbx_item_tag_"+tag.Tag] = ScopedVar{Value: tag.Value}
+	}
+
 	valueField.Config = &data.FieldConfig{
 		DisplayNameFromDS: seriesName,
 		Custom: map[string]interface{}{
