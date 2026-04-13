@@ -1,13 +1,35 @@
 services:
+  grafanadb:
+    image: postgres:15
+    container_name: grafanadb_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: grafana
+      POSTGRES_USER: grafana
+      POSTGRES_PASSWORD: grafana
+    ports:
+      - "5435:5432"
+    volumes:
+      - grafanapgdataapi:/var/lib/postgresql/data
+
   grafana:
     user: "0:0"
     extends:
       file: .config/docker-compose-base.yaml
       service: grafana
+    environment:
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: grafanadb:5432
+      GF_DATABASE_NAME: grafana
+      GF_DATABASE_USER: grafana
+      GF_DATABASE_PASSWORD: grafana
 
   frontend:
     image: node:24
     working_dir: /app
     volumes:
       - .:/app
-    command: sh -c "corepack enable && yarn install && yarn build --watch"
+    command: sh -c "corepack enable && yarn install && yarn dev"
+
+volumes:
+  grafanapgdataapi:
