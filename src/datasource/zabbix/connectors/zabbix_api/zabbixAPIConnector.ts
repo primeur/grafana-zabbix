@@ -232,7 +232,7 @@ export class ZabbixAPIConnector {
                 let tagsParam = [];
                 for (let i = 0; i < allTags.length; i++) {
                     const tag = parseItemTag(allTags[i]);
-                    tagsParam.push({ tag: tag.tag, value: tag.value, operator: '0' });
+                    tagsParam.push({ tag: tag.tag, value: tag.value, operator: '1' });
                 }
                 params.tags = tagsParam;
                 // Use AND eval type
